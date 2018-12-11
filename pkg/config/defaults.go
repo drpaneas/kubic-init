@@ -23,7 +23,7 @@ import (
 
 const (
 	// DefaultKubernetesVersion Kubernetes version to deploy
-	DefaultKubernetesVersion = "1.13.0"
+	DefaultKubernetesVersion = "1.13"
 
 	// DefaultAPIServerPort Default API server port
 	DefaultAPIServerPort = 6443
@@ -85,12 +85,17 @@ const (
 	DefaultEtdcImageTag = "3.3"
 )
 
+// kubic-init machinery
 const (
 	// DefaultKubicInitImage the kubic-init image by default
 	DefaultKubicInitImage = "kubic-init:latest"
 
 	// DefaultKubeadmPath Default kubeadm path
 	DefaultKubeadmPath = "/usr/bin/kubeadm"
+
+	// DefaultHyperkubeImage is the image used for running hyperkube
+	// Note: kubeadm will automatically append `hyperkube` + <version>
+	DefaultHyperkubeImage = "registry.opensuse.org/devel/kubic/containers/container/kubic"
 )
 
 // Some important default paths
