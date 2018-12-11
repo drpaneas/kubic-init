@@ -56,6 +56,8 @@ func toInitConfig(kubicCfg *config.KubicInitConfiguration, featureGates map[stri
 				PodSubnet:     kubicCfg.Network.PodSubnet,
 				ServiceSubnet: kubicCfg.Network.ServiceSubnet,
 			},
+			UseHyperKubeImage: true,
+			ImageRepository: config.DefaultHyperkubeImage,
 		},
 		NodeRegistration: kubeadmapiv1beta1.NodeRegistrationOptions{
 			KubeletExtraArgs: config.DefaultKubeletSettings,
