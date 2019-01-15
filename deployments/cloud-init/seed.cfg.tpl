@@ -30,8 +30,8 @@ ntp:
     - ntp3.suse.de
 
 runcmd:
-  - /usr/bin/systemctl enable --now ntpd || bin/true
   - sed -i -e 's/DHCLIENT_SET_HOSTNAME="yes"/DHCLIENT_SET_HOSTNAME="no"/g' /etc/sysconfig/network/dhcp
+  - /usr/bin/systemctl enable --now ntpd || bin/true
   - echo PermitRootLogin yes >> /etc/ssh/sshd_config
   - systemctl restart sshd
 

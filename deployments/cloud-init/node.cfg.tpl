@@ -38,8 +38,8 @@ write_files:
         token: ${token}
 
 runcmd:
+  - sed -i -e 's/DHCLIENT_SET_HOSTNAME="yes"/DHCLIENT_SET_HOSTNAME="no"/g'     /etc/sysconfig/network/dhcp
   - /usr/bin/systemctl enable --now ntpd || bin/true
-  - sed -i -e 's/DHCLIENT_SET_HOSTNAME="yes"/DHCLIENT_SET_HOSTNAME="no"/g' /etc/sysconfig/network/dhcp
   - echo PermitRootLogin yes >> /etc/ssh/sshd_config
   - systemctl restart sshd
 

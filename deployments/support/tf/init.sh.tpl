@@ -5,6 +5,8 @@ IMAGE="${kubic_init_image_name}"
 IMAGE_FILENAME="${kubic_init_image_tgz}"
 RUNNER=${kubic_init_runner}
 EXTRA_ARGS="${kubic_init_extra_args}"
+EXTRA_RPMS="${extra_rpms}"
+EXTRA_RPMS_REPO="${extra_rpms_repo}"
 
 ###################################################################################
 
@@ -32,8 +34,42 @@ print_file() {
     log "------------------------------------"
 }
 
+# make sure a repo is installed
+ensure_repo() {
+    repo_url=$1
+    repo_name="kubic-extra"
+
+    log "Ensuring repository $repo_url is installed"
+    zypper lr $repo_name || zypper ar --refresh --no-gpgcheck --enable $repo_url $repo_name
+}
+
+# make sure a package is installed
+# if it is not,  try to install it from the given repo
+ensure_rpms() {
+    log "Ensuring $@ are installed"
+    rpm -q $rpm || zypper in -y --no-recommends --force-resolution $@
+}
+
+ensure_dns() {
+    if host www.opensuse.org >/dev/null ; then
+        log "DNS seems to work fine"
+    else
+        log "WARNING: setting up DNS with resolver 8.8.8.8"
+        rm -f /etc/resolv.conf
+        echo "nameserver 8.8.8.8" > /etc/resolv.conf
+    fi
+}
+
+###################################################################################
+
+log "Ensuring DNS is working"
+ensure_dns
+
 log "Making sure kubic-init is not running..."
 systemctl stop kubic-init  >/dev/null 2>&1 || /bin/true
+
+[ -z "$EXTRA_RPMS_REPO" ] || ensure_repo $EXTRA_RPMS_REPO
+[ -z "$EXTRA_RPMS"      ] || ensure_rpms $EXTRA_RPMS
 
 log "Setting runner as $RUNNER..."
 [ -x /usr/bin/$RUNNER ] || ( log "FATAL: /usr/bin/$RUNNER does not exist!!!" ; exit 1 ; )
@@ -48,6 +84,7 @@ modprobe br_netfilter
 sysctl -w net.ipv4.ip_forward=1
 
 log "Setting up crio..."
+mkdir -p /etc/crio
 set_var plugin_dir \"/var/lib/kubelet/cni/bin\" /etc/crio/crio.conf
 echo 'runtime-endpoint: unix:///var/run/crio/crio.sock' > /etc/crictl.yaml
 

@@ -23,3 +23,6 @@ config/rbac/*
 config/crds/*
 cover.out
 *.coverprofile
+
+# automatic vars files
+deployments/tf-libvirt-*/*.auto.tfvars

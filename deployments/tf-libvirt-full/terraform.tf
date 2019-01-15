@@ -140,6 +140,18 @@ variable "nodes_memory" {
   description = "amount of RAM for some specific nodes"
 }
 
+variable "extra_rpms" {
+  type        = "string"
+  default     = ""
+  description = "extra RPMs to install"
+}
+
+variable "extra_rpms_repo" {
+  type        = "string"
+  default     = ""
+  description = "a RPMs repository where extra RPMs should be installed from"
+}
+
 data "template_file" "init_script" {
   template = "${file("../support/tf/init.sh.tpl")}"
 
@@ -148,6 +160,8 @@ data "template_file" "init_script" {
     kubic_init_image_tgz  = "${var.kubic_init_image_tgz}"
     kubic_init_runner     = "${var.kubic_init_runner}"
     kubic_init_extra_args = "${var.kubic_init_extra_args}"
+    extra_rpms            = "${var.extra_rpms}"
+    extra_rpms_repo       = "${var.extra_rpms_repo}"
   }
 }
 
