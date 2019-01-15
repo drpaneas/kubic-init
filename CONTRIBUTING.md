@@ -1,4 +1,14 @@
-# Development environment for `kubic-init`
+# Devel
+
+  - [Building](#building)
+  - [Deploy](#deploy)
+  - [Testing](#testing)
+
+# Building
+
+A simple `make` should be enough. This should compile [the main
+function](cmd/kubic-init/main.go) and generate a `kubic-init` binary as
+well as a _Docker_ image.
 
 ## Project structure
 
@@ -19,15 +29,9 @@ Working outside GOPATH is currently **not supported**
 
 ### Bumping the Kubernetes version used by `kubic-init`
 
-Update the constraints in [`go.mod`](../go.mod).
+Update the constraints in [`go.mod`](go.mod).
 
-## Building
-
-A simple `make` should be enough. This should compile [the main
-function](../cmd/kubic-init/main.go) and generate a `kubic-init` binary as
-well as a _Docker_ image.
-
-## Running unit-tests
+# Testing
 
 Unit tests can be run using `make test`
 
@@ -43,7 +47,7 @@ Once you have a deployed cluster, you can run the e2e tests on this cluster.
 SEEDER=192.168.122.73 ./run_suites.sh
 ```
 
-Developing test guide is here: [E2E-TESTS](../tests/README.md)
+Developing test guide is here: [E2E-TESTS](tests/README.md)
 
 ### Code Coverage:
 
@@ -52,7 +56,7 @@ Run first the tests. Then use `make coverage` for visualizing coverage.
 Feel free to read more about this on : https://blog.golang.org/cover.
 
 
-## Running `kubic-init` in your Development Environment
+# Deploy  
 
 There are multiple ways you can run the `kubic-init` for bootstrapping
 and managinig your Kubernetes cluster:
@@ -64,7 +68,7 @@ You can run the `kubic-init` container locally with:
 1. <a name="local-run"></a> `make local-run`. This will do the following things for you:
 
     * build the `kubic-init` executable
-    * install a [_drop-in_](../init/kubelet.drop-in.conf) unit for
+    * install a [_drop-in_](init/kubelet.drop-in.conf) unit for
     `kubelet`, so it can be started with the right parameters,
     stopping the `kubelet`.
     * run the `kubic-init` executable. This will generate a valid `kubeadm`
@@ -92,7 +96,7 @@ cluster with the help of Terraform. All these targets have some common
 steps, like:
 
   * starting `kubic`-based VMs
-  * generating some config files from the [`cloud-init` templates](../deployments/cloud-init)
+  * generating some config files from the [`cloud-init` templates](deployments/cloud-init)
   * copying some config files and drop-in units, install packages, etc...
   * copying the `kubic-init:latest` image and load it in the CRI.
   * starting the `kubic-init` container with `podman`.
@@ -106,13 +110,13 @@ have combinations of a seeder and regular nodes. For example:
    ```
    This will start a cluster with a _seeder_ and a _node_.
    You can increase the number of nodes in the cluster (or customize any
-   other variable in the [Terraform file](../deployments/tf-libvirt-full/terraform.tf))
+   other variable in the [Terraform file](deployments/tf-libvirt-full/terraform.tf))
    passing some Terraform arguments:
    ```bash
    $ make tf-full-apply TF_ARGS="-var nodes_count=3"
    ```
 
-   (see the [`f-libvirt-full`](../deployments/tf-libvirt-full)
+   (see the [`f-libvirt-full`](deployments/tf-libvirt-full)
    directory for more details).
 
 2. for running **only a seeder** on a VM:
@@ -134,7 +138,7 @@ have combinations of a seeder and regular nodes. For example:
    ```
    where `1.2.3.4` would be the IP address of the _seeder_ VM.
 
-   (see the [`tf-libvirt-nodes`](../deployments/tf-libvirt-nodes)
+   (see the [`tf-libvirt-nodes`](deployments/tf-libvirt-nodes)
    directory for more details).
 
 3. for running **only nodes** on the VMs:
@@ -150,7 +154,7 @@ have combinations of a seeder and regular nodes. For example:
    This means that you will need to run a seeder in your local
    development machine as described in [previous section](#local).  
 
-   (see the [`tf-libvirt-nodes`](../deployments/tf-libvirt-nodes)
+   (see the [`tf-libvirt-nodes`](deployments/tf-libvirt-nodes)
    directory for more details).
    
 Once you are done with your cluster, a `make tf-*-destroy` will

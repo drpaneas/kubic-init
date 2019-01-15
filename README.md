@@ -7,5 +7,13 @@ The Kubic-init repository is a project geared at simplifying the process of crea
 
 - [User-Guide-documentation](docs/user-guide.md)
 - [Design And Architecture](docs/design.md)
-- [Devel](docs/devel.md)
+- [Devel](CONTRIBUTING.md)
 - [Roadmap](docs/roadmap.md)
+
+___
+#### Kubic operators:
+
+On top of a cluster bootstrapped with kubic-init, you can add following operators:
+
+* [External authentication](https://github.com/kubic-project/dex-operator/blob/master/README.md)
+* [Adding private registries](https://github.com/kubic-project/registries-operator/blob/master/README.md)

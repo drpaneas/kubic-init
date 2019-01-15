@@ -1,7 +1,7 @@
 # Post-control plane manifests files
 
 - (**on build**),
-  - files in this directory will be copied to `/usr/lib/kubic/manifests` in
+  - files in this directory will be copied to `/usr/lib/kubic/manifests/` in
   the `kubic-init` image.
 - (**on run**, and only **in the seeder** node):
   - the `kubic-init` container will try to find all the:
