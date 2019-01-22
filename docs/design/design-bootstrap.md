@@ -4,10 +4,10 @@
 
 * Every cluster needs one (and only one) _seeder_.
 
-  * All the other nodes (_minions_) in the cluster will _join_
+  * All the other nodes in the cluster will _join_
     this seeder. So they will need the _seeder_ address.
-  * All the nodes in the cluster (_seeder_ and _minions_) share a
-    _token_. _Minions_ cannot join the _seeder_ without this token.
+  * All the nodes in the cluster (_seeder_ and nodes) share a
+    _token_. Nodes cannot join the _seeder_ without this token.
     * The _seeder_ can be started with a specific _token_. Otherwise,
       it will generate a random _token_.
     
