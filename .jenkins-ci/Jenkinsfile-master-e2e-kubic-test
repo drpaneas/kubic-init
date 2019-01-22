@@ -48,6 +48,7 @@ pipeline {
 
             echo 'Destroy terraform vms'
             sh "make tf-full-nuke"
+	    cleanWs()	
         }
     }
 }
